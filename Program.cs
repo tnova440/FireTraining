@@ -1,4 +1,7 @@
-using Microsoft.AspNetCore.Authentication.Negotiate;
+﻿using Microsoft.AspNetCore.Authentication.Negotiate;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using FireTrainingApp.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +17,8 @@ builder.Services.AddAuthorization(options =>
     options.FallbackPolicy = options.DefaultPolicy;
 });
 builder.Services.AddRazorPages();
+builder.Services.AddDbContext<FireTrainingAppContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("FireTrainingAppContext") ?? throw new InvalidOperationException("Connection string 'FireTrainingAppContext' not found.")));
 
 var app = builder.Build();
 
